@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Applicants{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h4>Applicants for: {{ drive.job_title }}</h4>
+    <a href="{{ url_for('company.dashboard') }}" class="btn btn-outline-secondary btn-sm">← Back</a>
+</div>
+
+{% if applications %}
+    {% for app in applications %}
+    <div class="card p-3 mb-3">
+        <div class="row align-items-center">
+            <div class="col-md-4">
+                <strong>{{ app.student.name }}</strong><br>
+                <small class="text-muted">{{ app.student.department or 'Dept not set' }} | CGPA: {{ app.student.cgpa or '—' }}</small><br>
+                <small>Applied: {{ app.applied_on.strftime('%d %b %Y') }}</small><br>
+                {% if app.student.resume_link %}
+                    <a href="{{ app.student.resume_link }}" target="_blank" class="btn btn-link btn-sm p-0">View Resume</a>
+                {% endif %}
+            </div>
+            <div class="col-md-2">
+                <span class="badge badge-{{ app.status | lower }} fs-6">{{ app.status }}</span>
+            </div>
+            <div class="col-md-6">
+                <form method="POST" action="{{ url_for('company.update_application', id=app.id) }}" class="d-flex gap-2">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="Applied"     {% if app.status == 'Applied'     %}selected{% endif %}>Applied</option>
+                        <option value="Shortlisted" {% if app.status == 'Shortlisted' %}selected{% endif %}>Shortlisted</option>
+                        <option value="Selected"    {% if app.status == 'Selected'    %}selected{% endif %}>Selected</option>
+                        <option value="Rejected"    {% if app.status == 'Rejected'    %}selected{% endif %}>Rejected</option>
+                    </select>
+                    <input type="text" name="remarks" class="form-control form-control-sm" placeholder="Remarks" value="{{ app.remarks or '' }}">
+                    <button type="submit" class="btn btn-primary btn-sm">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <div class="alert alert-info">No applications yet for this drive.</div>
+{% endif %}
+
+{% endblock %}

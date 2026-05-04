@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card p-4">
+            <h4 class="text-center mb-4">Register</h4>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Registering as</label>
+                    <select name="role" class="form-select">
+                        <option value="student">Student</option>
+                        <option value="company">Company</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Full Name / Company Name</label>
+                    <input type="text" name="name" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-success w-100">Create Account</button>
+            </form>
+            <p class="text-center mt-3 mb-0">
+                Already registered? <a href="{{ url_for('auth.login') }}">Login here</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

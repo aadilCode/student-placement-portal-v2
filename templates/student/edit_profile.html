@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %}Edit Profile{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h5>Edit Your Profile</h5>
+                <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-secondary btn-sm">← Back</a>
+            </div>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-control" value="{{ current_user.name }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Department</label>
+                    <input type="text" name="department" class="form-control" value="{{ current_user.department or '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Phone</label>
+                    <input type="text" name="phone" class="form-control" value="{{ current_user.phone or '' }}">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">CGPA</label>
+                        <input type="number" step="0.01" name="cgpa" class="form-control" value="{{ current_user.cgpa or '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Graduation Year</label>
+                        <input type="number" name="grad_year" class="form-control" value="{{ current_user.grad_year or '' }}">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Skills</label>
+                    <input type="text" name="skills" class="form-control" placeholder="e.g. Python, SQL, Java" value="{{ current_user.skills or '' }}">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Resume Link (Google Drive)</label>
+                    <input type="url" name="resume_link" class="form-control" value="{{ current_user.resume_link or '' }}">
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

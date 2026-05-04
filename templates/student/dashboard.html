@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %}Student Dashboard{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Welcome, {{ current_user.name }}</h3>
+    <a href="{{ url_for('student.edit_profile') }}" class="btn btn-outline-secondary btn-sm">Edit Profile</a>
+</div>
+
+<div class="card p-3 mb-4">
+    <h5>🏢 Open Placement Drives</h5>
+    {% if open_drives %}
+        {% for d in open_drives %}
+        <div class="border rounded p-3 mb-2 d-flex justify-content-between align-items-center">
+            <div>
+                <strong>{{ d.job_title }}</strong> — {{ d.company.name }}<br>
+                <small class="text-muted">
+                    📍 {{ d.location or 'Location TBD' }} &nbsp;|&nbsp;
+                    💰 {{ d.salary or 'Salary TBD' }} &nbsp;|&nbsp;
+                    📅 Deadline: {{ d.deadline or 'Open' }}
+                </small>
+            </div>
+            <div>
+                <a href="{{ url_for('student.view_drive', id=d.id) }}" class="btn btn-outline-primary btn-sm">View</a>
+                {% if d.id in applied_drive_ids %}
+                    <span class="badge bg-info ms-2">Applied</span>
+                {% else %}
+                    <a href="{{ url_for('student.apply', id=d.id) }}" class="btn btn-success btn-sm ms-2">Apply</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p class="text-muted mb-0">No open drives right now. Check back later.</p>
+    {% endif %}
+</div>
+
+<div class="card p-3">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+        <h5 class="mb-0">📋 My Applications</h5>
+        <a href="{{ url_for('student.history') }}" class="btn btn-outline-secondary btn-sm">Full History</a>
+    </div>
+    {% if my_applications %}
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Company</th><th>Job Title</th><th>Applied On</th><th>Status</th></tr></thead>
+        <tbody>
+            {% for app in my_applications %}
+            <tr>
+                <td>{{ app.drive.company.name }}</td>
+                <td>{{ app.drive.job_title }}</td>
+                <td>{{ app.applied_on.strftime('%d %b %Y') }}</td>
+                <td><span class="badge badge-{{ app.status | lower }}">{{ app.status }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p class="text-muted mb-0">You haven't applied to any drives yet.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

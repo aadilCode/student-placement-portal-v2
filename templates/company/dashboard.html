@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Company Dashboard{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Welcome, {{ current_user.name }}</h3>
+    <div>
+        <a href="{{ url_for('company.create_drive') }}"  class="btn btn-primary btn-sm">+ Create Drive</a>
+        <a href="{{ url_for('company.edit_profile') }}"  class="btn btn-outline-secondary btn-sm ms-2">Edit Profile</a>
+    </div>
+</div>
+
+<div class="card p-3 mb-4">
+    <h5>📢 Active Drives</h5>
+    {% if active_drives %}
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Job Title</th><th>Location</th><th>Status</th><th>Applicants</th><th>Actions</th></tr></thead>
+        <tbody>
+            {% for d in active_drives %}
+            <tr>
+                <td>{{ d.job_title }}</td>
+                <td>{{ d.location or '—' }}</td>
+                <td><span class="badge badge-{{ d.status | lower }}">{{ d.status }}</span></td>
+                <td>{{ d.applications | length }}</td>
+                <td>
+                    <a href="{{ url_for('company.view_applicants', id=d.id) }}" class="btn btn-sm btn-outline-primary">Applicants</a>
+                    <a href="{{ url_for('company.edit_drive',      id=d.id) }}" class="btn btn-sm btn-outline-secondary ms-1">Edit</a>
+                    <a href="{{ url_for('company.close_drive',     id=d.id) }}" class="btn btn-sm btn-warning ms-1">Close</a>
+                    <a href="{{ url_for('company.delete_drive',    id=d.id) }}" class="btn btn-sm btn-danger ms-1"
+                       onclick="return confirm('Delete this drive?')">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p class="text-muted mb-0">No active drives. Create one above.</p>
+    {% endif %}
+</div>
+
+{% if closed_drives %}
+<div class="card p-3">
+    <h5>🔒 Closed Drives</h5>
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Job Title</th><th>Location</th><th>Applicants</th></tr></thead>
+        <tbody>
+            {% for d in closed_drives %}
+            <tr>
+                <td>{{ d.job_title }}</td>
+                <td>{{ d.location or '—' }}</td>
+                <td>{{ d.applications | length }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% endblock %}

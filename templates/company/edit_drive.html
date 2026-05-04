@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Edit Drive{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h5>Edit Drive</h5>
+                <a href="{{ url_for('company.dashboard') }}" class="btn btn-outline-secondary btn-sm">← Back</a>
+            </div>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Job Title</label>
+                    <input type="text" name="job_title" class="form-control" value="{{ drive.job_title }}" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Job Description</label>
+                    <textarea name="description" class="form-control" rows="4">{{ drive.description }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Eligibility</label>
+                    <input type="text" name="eligibility" class="form-control" value="{{ drive.eligibility or '' }}">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Salary</label>
+                        <input type="text" name="salary" class="form-control" value="{{ drive.salary or '' }}">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" name="location" class="form-control" value="{{ drive.location or '' }}">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Save & Re-submit for Approval</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

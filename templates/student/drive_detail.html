@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}{{ drive.job_title }}{% endblock %}
+{% block content %}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card p-4">
+            <div class="d-flex justify-content-between mb-3">
+                <h4>{{ drive.job_title }}</h4>
+                <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline-secondary btn-sm">← Back</a>
+            </div>
+
+            <p><strong>Company:</strong> {{ drive.company.name }}</p>
+            <p><strong>Location:</strong> {{ drive.location or '—' }}</p>
+            <p><strong>Salary:</strong> {{ drive.salary or '—' }}</p>
+            <p><strong>Deadline:</strong> {{ drive.deadline or 'Not specified' }}</p>
+            <p><strong>Eligibility:</strong> {{ drive.eligibility or 'Open to all' }}</p>
+            <hr>
+            <p><strong>Description:</strong></p>
+            <p>{{ drive.description }}</p>
+            <hr>
+            {% if already_applied %}
+                <div class="alert alert-info mb-0">You have already applied to this drive.</div>
+            {% else %}
+                <a href="{{ url_for('student.apply', id=drive.id) }}" class="btn btn-success w-100">Apply Now</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
